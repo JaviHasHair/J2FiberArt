@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J2 Fiber Art — Handmade Knit Hats &amp; Scarves</title>
+<meta name="description" content="J2 Fiber Art: small-batch, hand-knit hats and scarves made from natural-fiber yarn. Shop the collection or request a custom piece.">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --paper:#F7F5F0;
+    --paper-alt:#EFEAE1;
+    --ink:#211F1C;
+    --ink-soft:#5B564E;
+    --juniper:#3F5344;
+    --juniper-dark:#2E3E34;
+    --heather:#6B5568;
+    --string:#C9C0AE;
+    --white:#FFFFFF;
+    --oatmeal:#DCCFB8;
+    --sage:#A9B29A;
+    --slate:#7C8B96;
+    --clay:#A98268;
+    --charcoal:#4B4844;
+    --plum:#8C7383;
+    --cream:#EDE6D8;
+    --radius-sm:4px;
+    --radius-md:14px;
+    --shadow-sm:0 1px 3px rgba(33,31,28,0.08);
+    --shadow-md:0 10px 30px rgba(33,31,28,0.14);
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.logo{
+    font-family:'Newsreader', serif;
+    font-weight:500;
+    margin:0;
+    color:var(--ink);
+  }
+
+  p{margin:0;}
+  a{color:inherit;}
+  ul{margin:0;padding:0;list-style:none;}
+  button{font-family:inherit;cursor:pointer;}
+
+  img,svg{display:block;max-width:100%;}
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible{
+    outline:2px solid var(--juniper);
+    outline-offset:2px;
+  }
+
+  .skip-link{
+    position:absolute;
+    left:-9999px;
+    top:0;
+    background:var(--ink);
+    color:var(--paper);
+    padding:0.75rem 1.25rem;
+    z-index:200;
+    border-radius:var(--radius-sm);
+  }
+  .skip-link:focus{left:1rem;top:1rem;}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--juniper);
+    display:block;
+    margin-bottom:0.9rem;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.5rem;
+    padding:0.9rem 1.7rem;
+    border-radius:999px;
+    font-size:0.95rem;
+    font-weight:500;
+    text-decoration:none;
+    border:1px solid var(--juniper);
+    transition:background-color .2s ease, color .2s ease, border-color .2s ease, transform .15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--juniper); color:var(--white);}
+  .btn-primary:hover{background:var(--juniper-dark); border-color:var(--juniper-dark);}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--ink);}
+  .btn-ghost:hover{background:var(--ink); color:var(--paper);}
+  .btn-block{width:100%;}
+  .btn:active{transform:scale(0.98);}
+  .btn[disabled]{opacity:0.45; cursor:not-allowed;}
+
+  section{padding:6rem 1.5rem;}
+  .section-inner{max-width:var(--maxw); margin:0 auto;}
+  .section-head{max-width:640px; margin-bottom:3rem;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.5rem); line-height:1.2;}
+  .section-head p.lede{margin-top:1rem; color:var(--ink-soft); font-size:1.05rem;}
+
+  /* ---------- Header ---------- */
+  .site-header{
+    position:sticky; top:0; z-index:60;
+    background:rgba(247,245,240,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid transparent;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .site-header.is-scrolled{
+    border-bottom-color:var(--string);
+    box-shadow:var(--shadow-sm);
+  }
+  .header-inner{
+    max-width:var(--maxw); margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.1rem 1.5rem;
+    gap:1.5rem;
+  }
+  .logo{font-size:1.4rem; text-decoration:none; letter-spacing:0.01em; display:flex; align-items:center;}
+  .logo img{height:50px; width:auto; display:block;}
+  .footer-logo img{height:44px; width:auto; display:block;}
+  .main-nav{display:flex; gap:2rem;}
+  .main-nav a{
+    text-decoration:none; font-size:0.95rem; color:var(--ink-soft);
+    transition:color .2s ease;
+  }
+  .main-nav a:hover{color:var(--ink);}
+  .header-actions{display:flex; align-items:center; gap:1rem;}
+  .cart-btn{
+    display:flex; align-items:center; gap:0.5rem;
+    background:transparent; border:1px solid var(--ink); border-radius:999px;
+    padding:0.55rem 1.1rem; font-size:0.9rem; color:var(--ink);
+    transition:background-color .2s ease, color .2s ease;
+  }
+  .cart-btn:hover{background:var(--ink); color:var(--paper);}
+  .cart-count{
+    font-family:'IBM Plex Mono', monospace;
+    background:var(--heather); color:var(--white);
+    border-radius:999px; min-width:1.4rem; height:1.4rem;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:0.75rem; padding:0 0.35rem;
+  }
+  .nav-toggle{
+    display:none; flex-direction:column; justify-content:center; gap:5px;
+    width:34px; height:34px; background:none; border:none; padding:0;
+  }
+  .nav-toggle span{width:100%; height:2px; background:var(--ink); border-radius:2px; transition:transform .2s ease, opacity .2s ease;}
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding-top:5rem; padding-bottom:4rem;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:3rem; align-items:center;
+    max-width:var(--maxw); margin:0 auto;
+  }
+  .hero-title{font-size:clamp(2.3rem,4.8vw,3.7rem); line-height:1.14; letter-spacing:-0.01em;}
+  .hero-title em{color:var(--juniper); font-style:italic;}
+  .hero-sub{margin-top:1.4rem; max-width:480px; color:var(--ink-soft); font-size:1.08rem;}
+  .hero-actions{margin-top:2.2rem; display:flex; gap:1rem; flex-wrap:wrap;}
+  .hero-visual{display:flex; align-items:center; justify-content:center;}
+  .hero-visual img{width:100%; height:auto; max-width:460px;}
+
+  /* ---------- Shop ---------- */
+  .filter-row{display:flex; gap:0.6rem; margin-bottom:2.6rem; flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem; letter-spacing:0.04em;
+    background:transparent; border:1px solid var(--string); color:var(--ink-soft);
+    border-radius:999px; padding:0.5rem 1.1rem;
+    transition:background-color .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .filter-btn:hover{border-color:var(--ink);}
+  .filter-btn.is-active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:2.2rem 1.8rem;
+  }
+  .product-card{
+    background:var(--white);
+    border:1px solid var(--string);
+    border-radius:var(--radius-md);
+    display:flex; flex-direction:column;
+    position:relative;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .product-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-md);}
+
+  .product-swatch{
+    aspect-ratio:4/5;
+    border-radius:var(--radius-md) var(--radius-md) 0 0;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:visible;
+    transition:background-color .25s ease;
+  }
+  .product-swatch svg{width:56%; height:56%;}
+
+  .product-tag{
+    position:absolute; top:-12px; left:14px;
+    background:var(--paper); border:1px solid var(--ink);
+    border-radius:3px; padding:3px 9px 3px 7px;
+    display:flex; align-items:center; gap:5px;
+    transform:rotate(-4deg);
+    box-shadow:var(--shadow-sm);
+    z-index:2;
+  }
+  .tag-hole{width:6px; height:6px; border-radius:50%; border:1px solid var(--ink); background:var(--paper); flex:none;}
+  .tag-text{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; white-space:nowrap;}
+
+  .product-body{padding:1.4rem 1.3rem 1.5rem; display:flex; flex-direction:column; gap:0.7rem; flex:1;}
+  .product-name{font-size:1.15rem;}
+  .product-blurb{font-size:0.88rem; color:var(--ink-soft); flex:1;}
+
+  .colorway-row{display:flex; align-items:center; gap:0.5rem;}
+  .colorway-dot{
+    width:20px; height:20px; border-radius:50%;
+    border:2px solid transparent; padding:0; background-clip:content-box;
+    box-shadow:0 0 0 1px var(--string);
+  }
+  .colorway-dot.is-selected{border-color:var(--ink);}
+  .colorway-label{font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--ink-soft);}
+
+  .product-footer{display:flex; align-items:center; justify-content:space-between; margin-top:0.3rem; gap:0.75rem;}
+  .price{font-family:'IBM Plex Mono', monospace; font-size:1rem;}
+  .add-btn{
+    font-size:0.82rem; padding:0.6rem 1.1rem;
+    background:transparent; color:var(--ink); border:1px solid var(--ink); border-radius:999px;
+    transition:background-color .2s ease, color .2s ease;
+  }
+  .add-btn:hover{background:var(--ink); color:var(--paper);}
+  .add-btn.is-added{background:var(--juniper); border-color:var(--juniper); color:var(--white);}
+
+  /* ---------- About ---------- */
+  .about{background:var(--paper-alt);}
+  .about .section-inner{
+    display:grid; grid-template-columns:0.8fr 1.2fr; gap:3.5rem; align-items:center;
+  }
+  .about-visual{
+    background:var(--cream); border-radius:50%;
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    max-width:340px; margin:0 auto;
+  }
+  .about-visual svg{width:56%;}
+  .about-copy h2{font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:1.2rem;}
+  .about-copy p{color:var(--ink-soft); margin-bottom:1rem; max-width:560px;}
+  .care-list{margin-top:1.4rem; display:flex; flex-direction:column; gap:0.6rem;}
+  .care-list li{
+    font-family:'IBM Plex Mono', monospace; font-size:0.82rem; color:var(--ink-soft);
+    padding-left:1.3rem; position:relative;
+  }
+  .care-list li::before{
+    content:'—'; position:absolute; left:0; color:var(--heather);
+  }
+
+  /* ---------- Custom orders ---------- */
+  .custom{background:var(--juniper); color:var(--paper);}
+  .custom .eyebrow{color:var(--cream);}
+  .custom h2{color:var(--paper); font-size:clamp(1.7rem,3.2vw,2.4rem);}
+  .custom-inner{max-width:640px; margin:0 auto; text-align:center;}
+  .custom-inner p.lede{color:var(--paper); opacity:0.85; margin:1.2rem 0 2rem; font-size:1.05rem;}
+  .custom .btn-primary{background:var(--paper); color:var(--juniper-dark); border-color:var(--paper);}
+  .custom .btn-primary:hover{background:var(--cream); border-color:var(--cream);}
+
+  /* ---------- Footer ---------- */
+  .site-footer{padding:5rem 1.5rem 2rem;}
+  .footer-inner{
+    max-width:var(--maxw); margin:0 auto;
+    display:flex; justify-content:space-between; gap:2rem; flex-wrap:wrap;
+    padding-bottom:2.5rem; border-bottom:1px solid var(--string);
+  }
+  .footer-brand p{color:var(--ink-soft); margin-top:0.6rem; max-width:280px;}
+  .footer-contact a{
+    display:inline-block; margin-top:0.4rem; text-decoration:none;
+    font-size:1.05rem; border-bottom:1px solid var(--ink);
+  }
+  .social-row{display:flex; gap:1rem; margin-top:1.1rem;}
+  .social-row a{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    transition:background-color .2s ease, color .2s ease;
+  }
+  .social-row a:hover{background:var(--ink); color:var(--paper);}
+  .social-row svg{width:16px; height:16px;}
+  .footer-bottom{
+    max-width:var(--maxw); margin:0 auto; padding-top:1.6rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; color:var(--ink-soft);
+  }
+
+  /* ---------- Cart drawer ---------- */
+  .overlay, .modal-overlay{
+    position:fixed; inset:0; background:rgba(33,31,28,0.45);
+    opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:70;
+  }
+  .overlay.is-open, .modal-overlay.is-open{opacity:1; pointer-events:auto;}
+
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100%;
+    width:min(420px, 100vw);
+    background:var(--paper);
+    box-shadow:var(--shadow-md);
+    transform:translateX(100%);
+    transition:transform .3s ease;
+    z-index:80;
+    display:flex; flex-direction:column;
+  }
+  .cart-drawer.is-open{transform:translateX(0);}
+  .cart-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.5rem 1.5rem 1rem; border-bottom:1px solid var(--string);
+  }
+  .icon-btn{
+    background:none; border:none; font-size:1.5rem; line-height:1;
+    color:var(--ink); padding:0.2rem 0.5rem; border-radius:var(--radius-sm);
+  }
+  .icon-btn:hover{color:var(--heather);}
+  .cart-items{flex:1; overflow-y:auto; padding:1rem 1.5rem;}
+  .cart-empty{color:var(--ink-soft); font-size:0.95rem; padding:2rem 0; text-align:center;}
+  .cart-item{
+    display:flex; gap:0.9rem; padding:1rem 0; border-bottom:1px solid var(--paper-alt);
+  }
+  .cart-item-swatch{
+    width:52px; height:52px; border-radius:var(--radius-sm); flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cart-item-swatch svg{width:60%; height:60%;}
+  .cart-item-info{flex:1; min-width:0;}
+  .cart-item-name{font-size:0.95rem;}
+  .cart-item-variant{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--ink-soft); margin-top:0.2rem;}
+  .cart-item-row{display:flex; align-items:center; justify-content:space-between; margin-top:0.6rem;}
+  .qty-stepper{display:flex; align-items:center; gap:0.6rem; border:1px solid var(--string); border-radius:999px; padding:0.15rem 0.5rem;}
+  .qty-stepper button{background:none; border:none; font-size:1rem; width:1.3rem; color:var(--ink);}
+  .qty-stepper span{font-family:'IBM Plex Mono', monospace; font-size:0.82rem; min-width:1rem; text-align:center;}
+  .cart-item-price{font-family:'IBM Plex Mono', monospace; font-size:0.88rem;}
+  .remove-btn{
+    background:none; border:none; font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem; color:var(--ink-soft); text-decoration:underline; padding:0; margin-top:0.5rem;
+  }
+  .remove-btn:hover{color:var(--heather);}
+  .cart-footer{padding:1.3rem 1.5rem 1.6rem; border-top:1px solid var(--string);}
+  .cart-subtotal{
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+    font-size:1rem; margin-bottom:1rem;
+  }
+  .cart-note{font-size:0.76rem; color:var(--ink-soft); margin-top:0.8rem; text-align:center;}
+
+  /* ---------- Checkout modal ---------- */
+  .checkout-modal{
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-46%);
+    width:min(560px, 92vw); max-height:88vh; overflow-y:auto;
+    background:var(--paper); border-radius:var(--radius-md);
+    box-shadow:var(--shadow-md); z-index:90;
+    padding:2.2rem 2.2rem 2rem;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .checkout-modal.is-open{opacity:1; pointer-events:auto; transform:translate(-50%,-50%);}
+  .checkout-modal h2{font-size:1.6rem; margin-bottom:0.5rem;}
+  .checkout-modal .lede{color:var(--ink-soft); font-size:0.92rem; margin-bottom:1.6rem;}
+  .checkout-close{position:absolute; top:1.2rem; right:1.4rem;}
+
+  .order-summary{
+    background:var(--paper-alt); border-radius:var(--radius-sm);
+    padding:1rem 1.2rem; margin-bottom:1.6rem; font-size:0.85rem;
+  }
+  .order-summary-row{display:flex; justify-content:space-between; padding:0.3rem 0; color:var(--ink-soft);}
+  .order-summary-total{
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+    padding-top:0.6rem; margin-top:0.4rem; border-top:1px solid var(--string); font-size:0.95rem; color:var(--ink);
+  }
+
+  .form-field{margin-bottom:1.1rem; display:flex; flex-direction:column; gap:0.4rem;}
+  .form-field label{font-size:0.85rem; font-weight:500;}
+  .form-field input, .form-field textarea{
+    font-family:'Work Sans', sans-serif; font-size:0.95rem;
+    padding:0.75rem 0.9rem; border:1px solid var(--string); border-radius:var(--radius-sm);
+    background:var(--white); color:var(--ink);
+  }
+  .form-field textarea{resize:vertical; min-height:70px;}
+  .form-row{display:flex; gap:0.9rem;}
+  .form-row .form-field{flex:1;}
+
+  .checkout-confirm{text-align:center; padding:1.5rem 0;}
+  .checkout-confirm h2{margin-bottom:0.8rem;}
+  .checkout-confirm p{color:var(--ink-soft); margin-bottom:1.8rem;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr; padding-top:2.5rem;}
+    .hero-visual{order:-1; max-width:280px; margin:0 auto;}
+    .about .section-inner{grid-template-columns:1fr; text-align:left;}
+    .about-visual{margin-bottom:1rem;}
+  }
+
+  @media (max-width: 700px){
+    .main-nav{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper); border-bottom:1px solid var(--string);
+      flex-direction:column; padding:1rem 1.5rem 1.5rem; gap:1rem;
+      display:none;
+    }
+    .main-nav.is-open{display:flex;}
+    .nav-toggle{display:flex;}
+    .footer-inner{flex-direction:column;}
+    .form-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#top" class="logo" aria-label="J2 Fiber Art — home">
+      <img src="logo.png" alt="J2 Fiber Art">
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Primary">
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <a href="#custom">Custom Orders</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" id="cartBtn" aria-haspopup="dialog" aria-controls="cartDrawer">
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div>
+      <p class="eyebrow">Hand-knit · Small batch · Made to order</p>
+      <h1 class="hero-title">Made stitch by stitch, <em>for winters that ask for more.</em></h1>
+      <p class="hero-sub">Every hat and scarf starts as a single skein of natural-fiber yarn and becomes, row by row, something built to keep you warm for years — not just a season.</p>
+      <div class="hero-actions">
+        <a href="#shop" class="btn btn-primary">Shop the collection</a>
+        <a href="#custom" class="btn btn-ghost">Request a custom piece</a>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <img src="logo.png" alt="">
+    </div>
+  </section>
+
+  <!-- Shop -->
+  <section class="shop" id="shop">
+    <div class="section-inner">
+      <div class="section-head">
+        <p class="eyebrow">The collection</p>
+        <h2>Hats &amp; scarves, ready to ship</h2>
+        <p class="lede">New colorways added each season. Can't find the right size or shade? Custom orders are always open.</p>
+      </div>
+
+      <div class="filter-row" role="tablist" aria-label="Filter products">
+        <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="filter-btn" data-filter="hats" role="tab" aria-selected="false">Hats</button>
+        <button class="filter-btn" data-filter="scarves" role="tab" aria-selected="false">Scarves</button>
+      </div>
+
+      <div class="product-grid" id="productGrid"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="section-inner">
+      <div class="about-visual" aria-hidden="true">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60,150 C60,110 70,90 100,90 C130,90 140,110 140,150" stroke="#211F1C" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="100" cy="65" r="26" stroke="#211F1C" stroke-width="3" fill="none"/>
+          <path d="M75,120 L60,105 M125,120 L140,105" stroke="#211F1C" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M55,100 Q40,95 45,80" stroke="#6B5568" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="about-copy">
+        <p class="eyebrow">About the studio</p>
+        <h2>Hi, I'm Jennifer McDow — I knit every piece by hand.</h2>
+        <p>What started as a way to use up leftover yarn turned into J2 Fiber Art. Every hat and scarf here is knit on my own needles, one row at a time, using wool and alpaca-blend yarn I choose for warmth first.</p>
+        <p>I keep batches small on purpose — usually just two or three of each colorway — so every order still feels personal. If something's out of stock, it's because someone else is already wearing it.</p>
+        <ul class="care-list">
+          <li>Hand wash cold, lay flat to dry</li>
+          <li>Merino wool &amp; alpaca-blend yarns</li>
+          <li>Made to order — please allow 1–2 weeks</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom orders -->
+  <section class="custom" id="custom">
+    <div class="custom-inner">
+      <p class="eyebrow">Custom orders</p>
+      <h2>Have a color, size, or gift in mind?</h2>
+      <p class="lede">If you're shopping for a specific team color, a birthday gift, or just want a scarf a little longer than what's shown here, tell me about it. Most custom pieces ship within two to three weeks.</p>
+      <a href="mailto:info@j2-fiberart.com?subject=Custom%20order%20request" class="btn btn-primary">Start a custom order</a>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="site-footer" id="contact">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="logo footer-logo"><img src="logo.png" alt="J2 Fiber Art"></p>
+      <p>Handmade knitwear, made in Lakeville, Minnesota.</p>
+    </div>
+    <div class="footer-contact">
+      <p class="eyebrow">Get in touch</p>
+      <a href="mailto:info@j2-fiberart.com">info@j2-fiberart.com</a>
+      <div class="social-row">
+        <a href="https://www.instagram.com/j2fiberart" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+        </a>
+        <a href="https://www.facebook.com/j2fiberart/" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 J2 Fiber Art. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Cart overlay + drawer -->
+<div class="overlay" id="overlay"></div>
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart" aria-hidden="true">
+  <div class="cart-header">
+    <h2>Your cart</h2>
+    <button class="icon-btn" id="closeCart" aria-label="Close cart">&times;</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    <p class="cart-note">Shipping &amp; payment are confirmed by email after you place your order.</p>
+  </div>
+</aside>
+
+<!-- Checkout overlay + modal -->
+<div class="modal-overlay" id="checkoutOverlay"></div>
+<div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Checkout" aria-hidden="true">
+  <button class="icon-btn checkout-close" id="closeCheckout" aria-label="Close checkout">&times;</button>
+
+  <div id="checkoutFormView">
+    <h2>Complete your order</h2>
+    <p class="lede">Fill in your details below. Submitting opens a pre-filled email to send us your order — we'll follow up with a payment link and shipping estimate within 1–2 business days.</p>
+
+    <div class="order-summary" id="orderSummary"></div>
+
+    <form id="checkoutForm">
+      <div class="form-field">
+        <label for="custName">Full name</label>
+        <input type="text" id="custName" name="custName" required>
+      </div>
+      <div class="form-field">
+        <label for="custEmail">Email</label>
+        <input type="email" id="custEmail" name="custEmail" required>
+      </div>
+      <div class="form-field">
+        <label for="custAddress">Shipping address</label>
+        <textarea id="custAddress" name="custAddress" required placeholder="Street, city, state, ZIP"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="custNotes">Order notes (optional)</label>
+        <textarea id="custNotes" name="custNotes" placeholder="Gift note, size preference, anything else"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Place order</button>
+    </form>
+  </div>
+
+  <div id="checkoutConfirmView" class="checkout-confirm" style="display:none;">
+    <h2>Order ready to send!</h2>
+    <p id="confirmText">Your email app should have opened with the details — just hit send. We'll be in touch soon.</p>
+    <button class="btn btn-ghost" id="continueShoppingBtn">Continue shopping</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SHOP_EMAIL = "info@j2-fiberart.com";
+
+  var COLORS = {
+    oatmeal:{hex:"#DCCFB8", dark:false},
+    sage:{hex:"#A9B29A", dark:false},
+    slate:{hex:"#7C8B96", dark:true},
+    clay:{hex:"#A98268", dark:true},
+    charcoal:{hex:"#4B4844", dark:true},
+    plum:{hex:"#8C7383", dark:true},
+    cream:{hex:"#EDE6D8", dark:false}
+  };
+
+  var PRODUCTS = [
+    {id:"h1", name:"Birchwood Beanie", category:"hats", price:38, blurb:"Ribbed merino beanie with a hand-finished folded cuff.", colorways:["oatmeal","charcoal"]},
+    {id:"h2", name:"Harbor Watch Cap", category:"hats", price:42, blurb:"Classic fisherman's rib knit in a heavier-weight wool.", colorways:["slate","cream"]},
+    {id:"h3", name:"Ember Slouch", category:"hats", price:36, blurb:"Chunky, slightly slouchy silhouette for cold mornings.", colorways:["clay","charcoal"]},
+    {id:"h4", name:"Meadow Bobble", category:"hats", price:34, blurb:"A soft bobble top on a simple stockinette beanie.", colorways:["sage","oatmeal"]},
+    {id:"h5", name:"Juniper Cable Hat", category:"hats", price:44, blurb:"Hand-cabled panels front and back, fully lined.", colorways:["plum","slate"]},
+    {id:"s1", name:"Cliffside Cowl", category:"scarves", price:52, blurb:"An infinity cowl made to wrap twice for extra warmth.", colorways:["slate","oatmeal"]},
+    {id:"s2", name:"Harbor Rib Scarf", category:"scarves", price:58, blurb:"A long, narrow ribbed scarf that layers under any coat.", colorways:["charcoal","cream"]},
+    {id:"s3", name:"Heather Wrap", category:"scarves", price:68, blurb:"An oversized wrap scarf, generous enough to double as a shawl.", colorways:["plum","sage"]},
+    {id:"s4", name:"Alder Lane Scarf", category:"scarves", price:54, blurb:"A classic striped scarf knit in two contrasting colorways.", colorways:["clay","oatmeal"]},
+    {id:"s5", name:"Solstice Cable Scarf", category:"scarves", price:62, blurb:"Wide cable panels bordered by a simple garter edge.", colorways:["sage","charcoal"]}
+  ];
+
+  var selectedColor = {};
+  var cart = [];
+  var lastFocused = null;
+
+  function fmt(n){ return "$" + n.toFixed(2); }
+  function titleCase(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function hatIcon(strokeColor){
+    return '<svg viewBox="0 0 64 64" fill="none" stroke="'+strokeColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+
+      '<path d="M14 40 C14 20 22 10 32 10 C42 10 50 20 50 40" />'+
+      '<path d="M12 40 h40" /><path d="M12 46 h40" /><path d="M12 52 h40" />'+
+      '<circle cx="32" cy="8" r="3" />'+
+      '</svg>';
+  }
+  function scarfIcon(strokeColor){
+    return '<svg viewBox="0 0 64 64" fill="none" stroke="'+strokeColor+'" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+
+      '<path d="M8 14 C20 10 26 18 24 26 C22 34 30 38 40 34 C50 30 56 36 56 44" />'+
+      '<path d="M8 14 l4 8 M12 12 l4 8" />'+
+      '<path d="M56 44 l-2 9 M52 42 l-2 9" />'+
+      '</svg>';
+  }
+
+  function iconFor(product, colorKey){
+    var color = COLORS[colorKey];
+    var stroke = color.dark ? "#F7F5F0" : "#211F1C";
+    return product.category === "hats" ? hatIcon(stroke) : scarfIcon(stroke);
+  }
+
+  function cardTemplate(p){
+    var colorKey = selectedColor[p.id] || p.colorways[0];
+    var color = COLORS[colorKey];
+    var dotsHtml = p.colorways.map(function(ck){
+      var c = COLORS[ck];
+      var sel = ck === colorKey ? " is-selected" : "";
+      return '<button class="colorway-dot'+sel+'" style="background-color:'+c.hex+'" '+
+        'data-product="'+p.id+'" data-color="'+ck+'" aria-label="'+titleCase(ck)+'" aria-pressed="'+(ck===colorKey)+'"></button>';
+    }).join("");
+
+    return (
+      '<div class="product-card">'+
+        '<div class="product-swatch" id="swatch-'+p.id+'" style="background-color:'+color.hex+'">'+
+          '<div class="product-tag"><span class="tag-hole"></span><span class="tag-text">'+fmt(p.price)+' · '+titleCase(colorKey)+'</span></div>'+
+          '<span id="icon-'+p.id+'">'+iconFor(p, colorKey)+'</span>'+
+        '</div>'+
+        '<div class="product-body">'+
+          '<h3 class="product-name">'+p.name+'</h3>'+
+          '<p class="product-blurb">'+p.blurb+'</p>'+
+          '<div class="colorway-row">'+dotsHtml+'</div>'+
+          '<div class="product-footer">'+
+            '<span class="price">'+fmt(p.price)+'</span>'+
+            '<button class="add-btn" data-add="'+p.id+'">Add to cart</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>'
+    );
+  }
+
+  var productGrid = document.getElementById("productGrid");
+
+  function renderProducts(filter){
+    var list = filter === "all" ? PRODUCTS : PRODUCTS.filter(function(p){ return p.category === filter; });
+    productGrid.innerHTML = list.map(cardTemplate).join("");
+  }
+
+  productGrid.addEventListener("click", function(e){
+    var dot = e.target.closest(".colorway-dot");
+    if(dot){
+      var pid = dot.getAttribute("data-product");
+      var ck = dot.getAttribute("data-color");
+      selectedColor[pid] = ck;
+      var color = COLORS[ck];
+      var swatch = document.getElementById("swatch-"+pid);
+      swatch.style.backgroundColor = color.hex;
+      var product = PRODUCTS.find(function(p){ return p.id === pid; });
+      document.getElementById("icon-"+pid).innerHTML = iconFor(product, ck);
+      swatch.querySelector(".tag-text").textContent = fmt(product.price) + " · " + titleCase(ck);
+      dot.closest(".colorway-row").querySelectorAll(".colorway-dot").forEach(function(d){
+        d.classList.toggle("is-selected", d === dot);
+        d.setAttribute("aria-pressed", d === dot ? "true" : "false");
+      });
+      return;
+    }
+    var addBtn = e.target.closest("[data-add]");
+    if(addBtn){
+      addToCart(addBtn.getAttribute("data-add"), addBtn);
+    }
+  });
+
+  document.querySelectorAll(".filter-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".filter-btn").forEach(function(b){
+        b.classList.remove("is-active");
+        b.setAttribute("aria-selected","false");
+      });
+      btn.classList.add("is-active");
+      btn.setAttribute("aria-selected","true");
+      renderProducts(btn.getAttribute("data-filter"));
+    });
+  });
+
+  /* ---------- Cart ---------- */
+  var cartItemsEl = document.getElementById("cartItems");
+  var cartCountEl = document.getElementById("cartCount");
+  var cartSubtotalEl = document.getElementById("cartSubtotal");
+
+  function addToCart(pid, btnEl){
+    var product = PRODUCTS.find(function(p){ return p.id === pid; });
+    var colorKey = selectedColor[pid] || product.colorways[0];
+    var key = pid + "-" + colorKey;
+    var existing = cart.find(function(i){ return i.key === key; });
+    if(existing){ existing.qty += 1; }
+    else{ cart.push({key:key, id:pid, name:product.name, price:product.price, colorKey:colorKey, qty:1}); }
+
+    if(btnEl){
+      btnEl.classList.add("is-added");
+      btnEl.textContent = "Added ✓";
+      setTimeout(function(){ btnEl.classList.remove("is-added"); btnEl.textContent = "Add to cart"; }, 1200);
+    }
+
+    renderCart();
+    openCart();
+  }
+
+  function renderCart(){
+    var totalQty = cart.reduce(function(s,i){ return s + i.qty; }, 0);
+    cartCountEl.textContent = totalQty;
+
+    if(cart.length === 0){
+      cartItemsEl.innerHTML = '<p class="cart-empty">Your cart is empty. Add a hat or scarf to get started.</p>';
+    } else {
+      cartItemsEl.innerHTML = cart.map(function(item){
+        var color = COLORS[item.colorKey];
+        var product = PRODUCTS.find(function(p){ return p.id === item.id; });
+        return (
+          '<div class="cart-item">'+
+            '<div class="cart-item-swatch" style="background-color:'+color.hex+'">'+iconFor(product, item.colorKey)+'</div>'+
+            '<div class="cart-item-info">'+
+              '<p class="cart-item-name">'+item.name+'</p>'+
+              '<p class="cart-item-variant">'+titleCase(item.colorKey)+'</p>'+
+              '<div class="cart-item-row">'+
+                '<div class="qty-stepper">'+
+                  '<button data-qty="-1" data-key="'+item.key+'" aria-label="Decrease quantity">−</button>'+
+                  '<span>'+item.qty+'</span>'+
+                  '<button data-qty="1" data-key="'+item.key+'" aria-label="Increase quantity">+</button>'+
+                '</div>'+
+                '<span class="cart-item-price">'+fmt(item.price*item.qty)+'</span>'+
+              '</div>'+
+              '<button class="remove-btn" data-remove="'+item.key+'">Remove</button>'+
+            '</div>'+
+          '</div>'
+        );
+      }).join("");
+    }
+
+    var subtotal = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+    cartSubtotalEl.textContent = fmt(subtotal);
+  }
+
+  cartItemsEl.addEventListener("click", function(e){
+    var qtyBtn = e.target.closest("[data-qty]");
+    if(qtyBtn){
+      var key = qtyBtn.getAttribute("data-key");
+      var delta = parseInt(qtyBtn.getAttribute("data-qty"), 10);
+      var item = cart.find(function(i){ return i.key === key; });
+      if(item){
+        item.qty += delta;
+        if(item.qty <= 0){ cart = cart.filter(function(i){ return i.key !== key; }); }
+      }
+      renderCart();
+      return;
+    }
+    var removeBtn = e.target.closest("[data-remove]");
+    if(removeBtn){
+      var rkey = removeBtn.getAttribute("data-remove");
+      cart = cart.filter(function(i){ return i.key !== rkey; });
+      renderCart();
+    }
+  });
+
+  /* ---------- Drawer + modal open/close ---------- */
+  var overlay = document.getElementById("overlay");
+  var cartDrawer = document.getElementById("cartDrawer");
+  var cartBtn = document.getElementById("cartBtn");
+  var closeCart = document.getElementById("closeCart");
+
+  function openCart(){
+    lastFocused = document.activeElement;
+    cartDrawer.classList.add("is-open");
+    overlay.classList.add("is-open");
+    cartDrawer.setAttribute("aria-hidden","false");
+    closeCart.focus();
+  }
+  function closeCartDrawer(){
+    cartDrawer.classList.remove("is-open");
+    overlay.classList.remove("is-open");
+    cartDrawer.setAttribute("aria-hidden","true");
+    if(lastFocused){ lastFocused.focus(); }
+  }
+  cartBtn.addEventListener("click", openCart);
+  closeCart.addEventListener("click", closeCartDrawer);
+  overlay.addEventListener("click", closeCartDrawer);
+
+  var checkoutOverlay = document.getElementById("checkoutOverlay");
+  var checkoutModal = document.getElementById("checkoutModal");
+  var checkoutBtn = document.getElementById("checkoutBtn");
+  var closeCheckout = document.getElementById("closeCheckout");
+  var orderSummary = document.getElementById("orderSummary");
+  var checkoutFormView = document.getElementById("checkoutFormView");
+  var checkoutConfirmView = document.getElementById("checkoutConfirmView");
+  var checkoutForm = document.getElementById("checkoutForm");
+
+  function openCheckout(){
+    if(cart.length === 0) return;
+    var subtotal = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+    orderSummary.innerHTML = cart.map(function(item){
+      return '<div class="order-summary-row"><span>'+item.qty+' × '+item.name+' ('+titleCase(item.colorKey)+')</span><span>'+fmt(item.price*item.qty)+'</span></div>';
+    }).join("") + '<div class="order-summary-total"><span>Subtotal</span><span>'+fmt(subtotal)+'</span></div>';
+
+    checkoutFormView.style.display = "block";
+    checkoutConfirmView.style.display = "none";
+    lastFocused = document.activeElement;
+    checkoutModal.classList.add("is-open");
+    checkoutOverlay.classList.add("is-open");
+    checkoutModal.setAttribute("aria-hidden","false");
+    closeCartDrawer();
+    document.getElementById("custName").focus();
+  }
+  function closeCheckoutModal(){
+    checkoutModal.classList.remove("is-open");
+    checkoutOverlay.classList.remove("is-open");
+    checkoutModal.setAttribute("aria-hidden","true");
+    if(lastFocused){ lastFocused.focus(); }
+  }
+  checkoutBtn.addEventListener("click", openCheckout);
+  closeCheckout.addEventListener("click", closeCheckoutModal);
+  checkoutOverlay.addEventListener("click", closeCheckoutModal);
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      if(checkoutModal.classList.contains("is-open")) closeCheckoutModal();
+      else if(cartDrawer.classList.contains("is-open")) closeCartDrawer();
+    }
+  });
+
+  checkoutForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    var name = document.getElementById("custName").value.trim();
+    var email = document.getElementById("custEmail").value.trim();
+    var address = document.getElementById("custAddress").value.trim();
+    var notes = document.getElementById("custNotes").value.trim();
+
+    var lines = cart.map(function(item){
+      return item.qty + " x " + item.name + " (" + titleCase(item.colorKey) + ") - " + fmt(item.price*item.qty);
+    }).join("\n");
+    var subtotal = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+
+    var body = "New order from the J2 Fiber Art website\n\n" +
+      "Items:\n" + lines + "\n\n" +
+      "Subtotal: " + fmt(subtotal) + "\n\n" +
+      "Customer details:\n" +
+      "Name: " + name + "\n" +
+      "Email: " + email + "\n" +
+      "Shipping address:\n" + address + "\n\n" +
+      "Notes: " + (notes || "-");
+
+    var mailto = "mailto:" + SHOP_EMAIL + "?subject=" + encodeURIComponent("New order - " + name) + "&body=" + encodeURIComponent(body);
+    window.location.href = mailto;
+
+    document.getElementById("confirmText").textContent =
+      "Your email app should have opened with the details — just hit send. We'll be in touch soon, " + name + ".";
+    checkoutFormView.style.display = "none";
+    checkoutConfirmView.style.display = "block";
+  });
+
+  document.getElementById("continueShoppingBtn").addEventListener("click", function(){
+    cart = [];
+    renderCart();
+    checkoutForm.reset();
+    closeCheckoutModal();
+  });
+
+  /* ---------- Mobile nav ---------- */
+  var navToggle = document.getElementById("navToggle");
+  var mainNav = document.getElementById("mainNav");
+  navToggle.addEventListener("click", function(){
+    var isOpen = mainNav.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+  mainNav.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){
+      mainNav.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded","false");
+    });
+  });
+
+  /* ---------- Sticky header shadow ---------- */
+  var siteHeader = document.getElementById("siteHeader");
+  window.addEventListener("scroll", function(){
+    siteHeader.classList.toggle("is-scrolled", window.scrollY > 8);
+  });
+
+  /* ---------- Init ---------- */
+  renderProducts("all");
+  renderCart();
+})();
+</script>
+
+</body>
+</html>
